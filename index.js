@@ -1,18 +1,20 @@
 const express = require('express');
 const app = express();
-const routerApi = require('./routes/index');
+const routerApi = require('./src/routes/index');
+const port = 3030;
+//agregamos el middleware para recibir datos en json
+app.use(express.json());
 
 app.listen(port,()=>{
-
+    console.log(`Servidor en http://localhost:${port}`);
 });
 
 app.get('/',(req,res)=>{
     res.send('Servidor andando');
+    
 });
 
 routerApi(app);
-
-
 
 // app.get('/products',(req,res)=>{
 //     res.json([
