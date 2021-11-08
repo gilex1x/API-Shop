@@ -1,45 +1,43 @@
 const express = require('express');
 const router = express.Router();
+const ProductsServices= require('../services/products');
+const servicePorducts = new ProductsServices();
 //GET
 router.get('/',(req,res)=>{
-    res.json([
-        {
-            nombre:'Collar Naruto',
-            price:8000
-        },
-        {
-            nombre:'Collar AttackOnTitan',
-            price:8000
-        }
-    ])
+    const response=servicePorducts.find();
+    res.json(response)
 });
 
 router.get('/:productId',(req,res)=>{
     const {productId}=req.params;
-    res.json({
-            nombre:'Collar AttackOnTitan',
-            price:8000,
-            id: productId
-    });
+    const response = servicePorducts.findOne(productId);
+    if(response){
+        res.json(response);
+    }else{
+        res.status(404).json({
+            message: "Producto: "+productId+" no encontrado"
+        })
+    }
 });
 
 //POST
 router.post('/',(req,res)=>{
     const body= req.body;
-    res.status(201).json({
-        message: 'data created',
-        data: body
-    })
+    const response =servicePorducts.create(body);
+    res.status(201).json(response);
 })
 //PUT & PATCH
 
 router.patch('/:productId',(req,res)=>{
     const {productId}= req.params;
     const body= req.body;
-    res.json({
-        message: `updated product ${productId}`,
-        body: body,
-        id: productId
-    })
+    const response = servicePorducts.update(productId,body);
+    res.json(response);
+});
+
+router.delete('/:productId',(req,res)=>{
+    const {productId}= req.params;
+    const response = servicePorducts.delete(productId);
+    res.json(response);
 })
 module.exports =router;
