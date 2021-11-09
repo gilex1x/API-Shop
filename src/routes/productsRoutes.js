@@ -3,41 +3,55 @@ const router = express.Router();
 const ProductsServices= require('../services/products');
 const servicePorducts = new ProductsServices();
 //GET
-router.get('/',(req,res)=>{
-    const response=servicePorducts.find();
+router.get('/',async (req,res)=>{
+    const response= await servicePorducts.find();
     res.json(response)
 });
 
-router.get('/:productId',(req,res)=>{
-    const {productId}=req.params;
-    const response = servicePorducts.findOne(productId);
-    if(response){
-        res.json(response);
-    }else{
-        res.status(404).json({
-            message: "Producto: "+productId+" no encontrado"
-        })
+router.get('/:productId',async (req,res,next)=>{
+    try{
+        const {productId}=req.params;
+        const response = await servicePorducts.findOne(productId);
+        if(response){
+            res.json(response);
+        }else{
+            res.status(404).json({
+                message: "Producto: "+productId+" no encontrado"
+            })
+        }
+    }catch(error){
+        next(error);
     }
+
 });
 
 //POST
-router.post('/',(req,res)=>{
+router.post('/',async (req,res)=>{
     const body= req.body;
-    const response =servicePorducts.create(body);
+    const response =await servicePorducts.create(body);
     res.status(201).json(response);
 })
 //PUT & PATCH
 
-router.patch('/:productId',(req,res)=>{
-    const {productId}= req.params;
-    const body= req.body;
-    const response = servicePorducts.update(productId,body);
-    res.json(response);
+router.patch('/:productId',async (req,res)=>{
+    try {
+        const {productId}= req.params;
+        const body= req.body;
+        const response = await servicePorducts.update(productId,body);
+        res.json(response);
+    } catch (error) {
+        res.status(404).json(error);
+    }
 });
 
-router.delete('/:productId',(req,res)=>{
-    const {productId}= req.params;
-    const response = servicePorducts.delete(productId);
-    res.json(response);
+router.delete('/:productId',async (req,res,next)=>{
+    try {
+        const {productId}= req.params;
+        const response = await servicePorducts.delete(productId);
+        res.json(response);    
+    } catch (error) {
+        next(error);    
+    }
+    
 })
 module.exports =router;
