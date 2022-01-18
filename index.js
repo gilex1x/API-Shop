@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const routerApi = require('./src/routes/index');
 
 const {logError,errorHandler}= require('./src/middlewares/errorHandlers');
@@ -7,6 +8,7 @@ const {logError,errorHandler}= require('./src/middlewares/errorHandlers');
 const port = 3030;
 //agregamos el middleware para recibir datos en json
 app.use(express.json());
+app.use(cors()); 
 
 app.get('/',(req,res)=>{
     res.send('Servidor andando');    
