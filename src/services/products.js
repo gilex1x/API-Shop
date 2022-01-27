@@ -12,6 +12,21 @@ const productsList=[{
         productId:"3",    
         nombre:'Collar Bleach',
         price:8000
+    },
+    {
+        productId:"4",    
+        nombre:'Aretes HP',
+        price:8000
+    },
+    {
+        productId:"5",    
+        nombre:'Collar Shield',
+        price:8000
+    },
+    {
+        productId:"6",    
+        nombre:'Pin Umbrella',
+        price:8000
     }
 ]
 
